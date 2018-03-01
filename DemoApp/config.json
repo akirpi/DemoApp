@@ -1,0 +1,6 @@
+﻿{
+  "ConnectionStrings": {
+    "DemoAppConnectionString" : "server=G752VM\\MSSQLSERVER01;Database=DemoAppDb;Integrated Security=true;MultipleActiveResultSets=true;" 
+
+  } 
+}

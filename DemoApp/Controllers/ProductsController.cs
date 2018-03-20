@@ -1,5 +1,7 @@
-﻿using DemoApp.Data;
+﻿using AutoMapper;
+using DemoApp.Data;
 using DemoApp.Data.Entities;
+using DemoApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,11 +16,13 @@ namespace DemoApp.Controllers
     {
         private readonly IDemoAppRepository _repository;
         private readonly ILogger<ProductsController> _logger;
+        private readonly IMapper _mapper;
 
-        public ProductsController(IDemoAppRepository repository, ILogger<ProductsController> logger)
+        public ProductsController(IDemoAppRepository repository, ILogger<ProductsController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,7 +30,7 @@ namespace DemoApp.Controllers
         {
             try
             {
-                return Ok(_repository.GetAllProducts());
+                return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(_repository.GetAllProducts()));
             }
             catch (Exception ex)
             {

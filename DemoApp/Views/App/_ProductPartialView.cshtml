@@ -1,0 +1,16 @@
+﻿@model DemoApp.Data.Entities.Product
+
+<div class="col-md-3">
+    <div class="well well-sm">
+        <img src="~/img/@(Model.ArtId).jpg " class="img-responsive" alt="@Model.Title" />
+        <h3>@Model.Category - @Model.Size</h3>
+        <ul class="product-props">
+            <li>Price: @Model.Price</li>
+            <li>Artist: @Model.Artist</li>
+            <li>Title: @Model.Title</li>
+            <li>Description: @Model.ArtDescription</li>
+        </ul>
+        <button id="buyButton">Buy</button>
+    </div>
+</div>
+

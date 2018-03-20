@@ -18,7 +18,7 @@ namespace DemoApp.ViewModels
         public string Subject { get; set; }
         [Required]
         [MaxLength(250, ErrorMessage = "Message too long. Max length of the message is 250 char.")]
-        public string  Message { get; set; }
+        public string  Message { get; set; } // html encode set - html decode get
 
     }
 

@@ -10,36 +10,58 @@ using Microsoft.Extensions.DependencyInjection;
 using DemoApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using AutoMapper;
+using DemoApp.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DemoApp
 {
     public class Startup
     {
         private readonly IConfiguration _config;
+        private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env)
         {
             _config = config;
+            _env = env;
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<StoreUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<DemoAppContext>();
+
             services.AddDbContext<DemoAppContext>(cfg =>
             {
                 cfg.UseSqlServer(_config.GetConnectionString("DemoAppConnectionString"));
             });
 
-            services.AddTransient<IMailService, NullMailService>();
-            services.AddTransient<DemoAppSeeder>();
-            //support for real mail service
+            services.AddAutoMapper();
 
+            services.AddTransient<IMailService, MailService>();
+            services.AddTransient<DemoAppSeeder>();
+            
             services.AddScoped<IDemoAppRepository, DemoAppRepository>();
 
-            services.AddMvc()
+            services.AddMvc(opt =>
+            {
+                if (_env.IsProduction())
+                {
+                    opt.Filters.Add(new RequireHttpsAttribute());
+                }
+            })
                 .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-        }
 
+           
+
+        }
+            
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -55,6 +77,8 @@ namespace DemoApp
             
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseMvc(cfg =>
             {
                 cfg.MapRoute("Default",
@@ -68,7 +92,7 @@ namespace DemoApp
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var seeder = scope.ServiceProvider.GetService<DemoAppSeeder>();
-                    seeder.Seed();
+                    seeder.Seed().Wait();
                 }
             }
         }

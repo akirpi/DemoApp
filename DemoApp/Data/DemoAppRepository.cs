@@ -43,12 +43,20 @@ namespace DemoApp.Data
                        .ToList();
         }
 
-        public IEnumerable<Order> GetAllOrders()
+        public IEnumerable<Order> GetAllOrders(bool includeItems)
         {
-            return _ctx.Orders
-                       .Include(o => o.Items)
-                       .ThenInclude(p => p.Product)
-                       .ToList();
+            if (includeItems)
+            {
+                return _ctx.Orders
+                         .Include(o => o.Items)
+                         .ThenInclude(p => p.Product)
+                         .ToList();
+            }
+            else
+            {
+                return _ctx.Orders
+                           .ToList();
+            }
                         
         }
 
@@ -61,11 +69,16 @@ namespace DemoApp.Data
                       .FirstOrDefault();
         }
 
+        public void AddEntity(object model)
+        {
+            _ctx.Add(model);
+        } 
+
         public bool SaveAll()
         {
             return _ctx.SaveChanges() > 0;
         }
 
-       
+        
     }
 }

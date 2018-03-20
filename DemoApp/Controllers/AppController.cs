@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DemoApp.Data;
+using DemoApp.Data.Entities;
 using DemoApp.Services;
 using DemoApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,11 +21,15 @@ namespace DemoApp.Controllers
         private readonly IMailService _mailService;
 
         private readonly IDemoAppRepository _repository;
+        private readonly IMapper _mapper;
+        private readonly IConfiguration _cfg;
 
-        public AppController(IMailService mailService, IDemoAppRepository repository)
+        public AppController(IMailService mailService, IDemoAppRepository repository, IMapper mapper, IConfiguration cfg)
         {
            _mailService = mailService;
-            _repository = repository; 
+            _repository = repository;
+            _mapper = mapper;
+            _cfg = cfg;
         }
        
         public IActionResult Index()
@@ -42,9 +51,9 @@ namespace DemoApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _mailService.SendMessage("alem.huseinspahic@gmail.com", model.Subject, $"From: {model.Name} - {model.Email}, Message: {model.Message}");
+                _mailService.SendMessage(_cfg["emails:emailTo"], model.Subject, $"From: {model.Name} - {model.Email}, Message: {model.Message}");
                 ViewBag.UserMessage = "Mail Sent";
-                ModelState.Clear();
+                ModelState.Clear(); 
             }
           
 
@@ -60,10 +69,10 @@ namespace DemoApp.Controllers
 
         }
 
+        [Authorize]
         public IActionResult Shop()
         {
             var results = _repository.GetAllProducts();
-
             return View(results);
         }
     }

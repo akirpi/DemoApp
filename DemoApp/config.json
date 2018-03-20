@@ -6,7 +6,17 @@
   "Logging": {
     "LogLevel": {
       "Default": "Information",
-      "Microsoft":  "Warning"
+      "Microsoft": "Warning"
     }
-  }
+  },
+  "emails": {
+    "emailTo": "alem.huseinspahic@gmail.com",
+    "emailFrom": "demoapp.test.mail@gmail.com"
+
+  },
+  "passwords": {
+    "email": "demoapp123"
+  },
+
+  
 }

@@ -1,5 +1,6 @@
 ﻿using DemoApp.Data.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,16 +16,39 @@ namespace DemoApp.Data
 
         private readonly DemoAppContext _ctx;
         private readonly IHostingEnvironment _hosting;
+        private readonly UserManager<StoreUser> _userManager;
 
-        public DemoAppSeeder(DemoAppContext ctx, IHostingEnvironment hosting)
+        public DemoAppSeeder(DemoAppContext ctx, IHostingEnvironment hosting, UserManager<StoreUser> userManager)
         {
             _ctx = ctx;
             _hosting = hosting;
+            _userManager = userManager;
         }
 
-        public void Seed()
+        public async Task Seed()
         {
             _ctx.Database.EnsureCreated();
+
+            var user = await _userManager.FindByEmailAsync("alem.huseinspahic@gmail.com");
+
+            if (user == null)
+            {
+                user = new StoreUser()
+                {
+                    FirstName = "Alem",
+                    LastName = "Huseinspahic",
+                    UserName = "alem.huseinspahic@gmail.com",
+                    Email = "alem.huseinspahic@gmail.com"
+                };
+
+                var result = await _userManager.CreateAsync(user, "P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Failed to create default user");
+                }
+
+
+            }
 
             if (!_ctx.Products.Any())
             {
@@ -38,6 +62,7 @@ namespace DemoApp.Data
                 {
                     OrderDate = DateTime.Now,
                     OrderNumber = "12345",
+                    User = user,
                     Items = new List<OrderItem>()
                     {
                         new OrderItem()

@@ -31,11 +31,13 @@ namespace DemoApp.Services
             mail.BodyEncoding = System.Text.Encoding.UTF8;
             mail.IsBodyHtml = true;
             mail.Priority = System.Net.Mail.MailPriority.High;
-            SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential(_cfg["emails:emailFrom"], _cfg["passwords:email"]);
-            client.Port = 587;
-            client.Host = "smtp.gmail.com";
-            client.EnableSsl = true;
+            SmtpClient client = new SmtpClient
+            {
+                Credentials = new System.Net.NetworkCredential(_cfg["emails:emailFrom"], _cfg["passwords:email"]),
+                Port = 587,
+                Host = "smtp.gmail.com",
+                EnableSsl = true
+            };
             client.Send(mail);
             _logger.LogInformation($"To: {to} Subject: {subject} Body: {body}");
         }

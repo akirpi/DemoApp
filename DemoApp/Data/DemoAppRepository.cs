@@ -69,10 +69,23 @@ namespace DemoApp.Data
                       .FirstOrDefault();
         }
 
+        public IEnumerable<Message> GetMessages(string receiver)
+        {
+            return _ctx.Messages
+                       .Where(m => m.Receiver == receiver)
+                       .OrderBy(m => m.TimeSent)
+                       .ToList();
+        }
+
+        
+
+
         public void AddEntity(object model)
         {
             _ctx.Add(model);
         } 
+
+       
 
         public bool SaveAll()
         {

@@ -10,6 +10,9 @@ using DemoApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,13 +27,14 @@ namespace DemoApp.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _cfg;
 
+
         public AppController(IMailService mailService, IDemoAppRepository repository, IMapper mapper, IConfiguration cfg)
         {
-           _mailService = mailService;
+            _mailService = mailService;
             _repository = repository;
             _mapper = mapper;
             _cfg = cfg;
-        }
+        }   
        
         public IActionResult Index()
         {
@@ -74,6 +78,31 @@ namespace DemoApp.Controllers
         {
             var results = _repository.GetAllProducts();
             return View(results);
+        }
+
+        [Authorize]
+        [HttpGet("messaging")]
+        public IActionResult Message()
+        {
+            ViewBag.Title = "Messaging";
+
+            var username = User.Identity.Name;
+
+            var results = _mapper.Map <IEnumerable<Message>, IEnumerable<MessageViewModel>>(_repository.GetMessages(username));
+
+            return View(results);
+
+        }
+
+        [HttpPost("messaging")]
+        public IActionResult Message(MessageViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                _repository.AddEntity(model.IsRead == true);
+            }
+
+            return View();
         }
     }
 }

@@ -12,6 +12,8 @@ namespace DemoApp.Data
         Order GetOrderById(int id);
         void AddEntity(object model);
 
+        IEnumerable<Message> GetMessages(string receiver);
+
         bool SaveAll();
         
     }

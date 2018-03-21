@@ -22,6 +22,9 @@ namespace DemoApp.Data
             CreateMap<Product, ProductViewModel>()
                 .ReverseMap();
 
+            CreateMap<Message, MessageViewModel>()
+                .ReverseMap();
+
 
         }
     }

@@ -30,6 +30,7 @@ namespace DemoApp.Data
             _ctx.Database.EnsureCreated();
 
             var user = await _userManager.FindByEmailAsync("alem.huseinspahic@gmail.com");
+            var user2 = await _userManager.FindByEmailAsync("emir.ibric@gmail.com");
 
             if (user == null)
             {
@@ -47,6 +48,126 @@ namespace DemoApp.Data
                     throw new InvalidOperationException("Failed to create default user");
                 }
 
+
+            }
+
+            if (user2 == null)
+            {
+                user2 = new StoreUser()
+                {
+                    FirstName = "Emir",
+                    LastName = "Ibric",
+                    UserName = "emir.ibric@gmail.com",
+                    Email = "emir.ibric@gmail.com"
+                };
+
+                var result = await _userManager.CreateAsync(user2, "P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Failed to create default user2");
+                }
+
+
+            }
+
+            if (!_ctx.Messages.Any())
+            {
+                var message = new Message()
+                {
+                    
+                    Receiver = "alem.huseinspahic@gmail.com",
+                    Sender = "emir.ibric@gmail.com",
+                    Subject = "Test message",
+                    MessageItem = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor " +
+                    "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. " +
+                    "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
+                    "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
+                    "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. " +
+                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam " +
+                    "erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus " +
+                    "est Lorem ipsum dolor sit amet.",
+                    TimeSent = DateTime.Now,
+                    IsRead = false
+
+                };
+
+                var message2 = new Message()
+                {
+                    
+                    Receiver = "alem.huseinspahic@gmail.com",
+                    Sender = "emir.ibric@gmail.com",
+                    Subject = "Test message 2",
+                    MessageItem = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor " +
+                    "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. " +
+                    "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
+                    "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
+                    "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. " +
+                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam " +
+                    "erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus " +
+                    "est Lorem ipsum dolor sit amet.",
+                    TimeSent = DateTime.Today.AddHours(-3),
+                    IsRead = true
+
+                };
+
+                var message3 = new Message()
+                {
+                    
+                    Receiver = "alem.huseinspahic@gmail.com",
+                    Sender = "emir.ibric@gmail.com",
+                    Subject = "Test message 3",
+                    MessageItem = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor " +
+                    "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. " +
+                    "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
+                    "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
+                    "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. " +
+                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam " +
+                    "erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus " +
+                    "est Lorem ipsum dolor sit amet.",
+                    TimeSent = DateTime.Today.AddHours(-4),
+                    IsRead = false
+
+                };
+
+                var message4 = new Message()
+                {
+                    
+                    Receiver = "alem.huseinspahic@gmail.com",
+                    Sender = "emir.ibric@gmail.com",
+                    Subject = "Test message 4",
+                    MessageItem = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor " +
+                    "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. " +
+                    "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
+                    "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
+                    "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. " +
+                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam " +
+                    "erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus " +
+                    "est Lorem ipsum dolor sit amet.",
+                    TimeSent = DateTime.Today.AddHours(-5),
+                    IsRead = true
+
+                };
+
+                var message5 = new Message()
+                {
+                    
+                    Receiver = "alem.huseinspahic@gmail.com",
+                    Sender = "emir.ibric@gmail.com",
+                    Subject = "Test message 5",
+                    MessageItem = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor " +
+                    "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. " +
+                    "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, " +
+                    "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et " +
+                    "accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. " +
+                    "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam " +
+                    "erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus " +
+                    "est Lorem ipsum dolor sit amet.",
+                    TimeSent = DateTime.Today.AddDays(-12),
+                    IsRead = false
+
+                };
+                _ctx.Messages.AddRange(message, message2, message3, message4, message5);
+                _ctx.SaveChanges();
 
             }
 
@@ -77,6 +198,8 @@ namespace DemoApp.Data
                 };
 
                 _ctx.Orders.Add(order);
+
+                
 
                 _ctx.SaveChanges();
             }

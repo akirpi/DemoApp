@@ -1,0 +1,24 @@
+﻿@model IEnumerable<MessageViewModel>
+@{
+    ViewBag.Title = "Inbox";
+}
+@section scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+}
+
+
+<div class="list-group col-md-4">
+    <a href="#" class="list-group-item active">
+        Inbox - @Model.Where(m => m.IsRead == false).Count() new messages
+    </a>
+    @foreach (var m in Model)
+    {
+        if (m.IsRead)
+        {<a href="#" class="list-group-item message">@m.TimeSent >> From: @m.Sender - Subject: @m.Subject</a>}
+        else
+        {<a onclick="showMessage(@m.MessageItem)" class="list-group-item list-group-item-info message">@m.TimeSent >> From: @m.Sender - Subject: @m.Subject</a>}
+    }
+   
+    <div class="col-md-8"></div>

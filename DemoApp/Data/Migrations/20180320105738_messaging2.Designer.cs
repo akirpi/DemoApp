@@ -11,9 +11,10 @@ using System;
 namespace DemoApp.Migrations
 {
     [DbContext(typeof(DemoAppContext))]
-    partial class DemoAppContextModelSnapshot : ModelSnapshot
+    [Migration("20180320105738_messaging2")]
+    partial class messaging2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,13 +34,17 @@ namespace DemoApp.Migrations
 
                     b.Property<string>("Sender");
 
+                    b.Property<string>("StoreUserId");
+
                     b.Property<string>("Subject");
 
                     b.Property<DateTime>("TimeSent");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages");
+                    b.HasIndex("StoreUserId");
+
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("DemoApp.Data.Entities.Order", b =>
@@ -307,6 +312,13 @@ namespace DemoApp.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("DemoApp.Data.Entities.Message", b =>
+                {
+                    b.HasOne("DemoApp.Data.Entities.StoreUser")
+                        .WithMany("MessageItem")
+                        .HasForeignKey("StoreUserId");
                 });
 
             modelBuilder.Entity("DemoApp.Data.Entities.Order", b =>

@@ -1,5 +1,6 @@
 ﻿using DemoApp.Data.Entities;
 using DemoApp.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,11 +15,13 @@ namespace DemoApp.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<StoreUser> _signInManager;
+        
 
         public AccountController(ILogger<AccountController> logger, SignInManager<StoreUser> signInManager)
         {
            _logger = logger;
            _signInManager = signInManager;
+           
         }
 
         public IActionResult Login()
@@ -37,9 +40,12 @@ namespace DemoApp.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+                
 
                 if (result.Succeeded)
                 {
+                    
+                    
                     if (Request.Query.Keys.Contains("ReturnUrl"))
                     {
                         Redirect(Request.Query["ReturnUrl"].First());

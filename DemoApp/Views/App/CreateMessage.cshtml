@@ -1,0 +1,16 @@
+﻿@model CreateMessageViewModel
+
+@{
+    ViewBag.Title = "Send Message";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    @Html.Partial("~/Views/App/Partials/CreateMessagePostBack.cshtml", Model);
+
+}
+else
+{
+    @Html.Partial("~/Views/App/Partials/CreateMessageForm.cshtml", Model);
+
+}

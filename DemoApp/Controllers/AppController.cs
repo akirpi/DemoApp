@@ -88,18 +88,62 @@ namespace DemoApp.Controllers
 
             var username = User.Identity.Name;
 
-            var results = _mapper.Map <IEnumerable<Message>, IEnumerable<MessageViewModel>>(_repository.GetMessages(username));
+            var results = _mapper.Map<IEnumerable<Message>, IEnumerable<MessageViewModel>>(_repository.GetMessages(username));
 
             return View(results);
 
         }
-
-        [HttpPost("messaging")]
-        public IActionResult Message(MessageViewModel model)
+        [Authorize]
+        [HttpGet("app/message1/{id}")]
+        public string Message1(int Id)
         {
-            if (User.Identity.IsAuthenticated)
+            ViewBag.Title = "Messaging";
+                  
+            
+
+            var result = _mapper.Map<Message, MessageViewModel>(_repository.GetMessageById(Id));
+            if (!result.IsRead)
             {
-                _repository.AddEntity(model.IsRead == true);
+                var isread = _repository.GetMessageById(Id);
+                isread.IsRead = true;
+                _repository.SaveAll();
+
+            }
+
+            return (result.MessageItem);
+
+        }
+        [Authorize]
+        [HttpGet("messaging/sendmessage")]
+        public IActionResult CreateMessage()
+        {
+                        return View();
+        }
+
+
+
+        [Authorize]
+        [HttpPost("messaging/sendmessage")]
+        public IActionResult CreateMessage(CreateMessageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Message message = new Message()
+                {
+                    IsRead = model.IsRead,
+                    Receiver = model.Receiver,
+                    Sender = User.Identity.Name,
+                    TimeSent = model.TimeSent,
+                    MessageItem = model.MessageItem,
+                    Subject = model.Subject,
+
+                };
+                
+                _repository.AddEntity(message);
+                _repository.SaveAll();
+
+                ModelState.Clear();
+                ViewBag.Message = $"Message sent to {model.Receiver}";
             }
 
             return View();

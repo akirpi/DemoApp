@@ -3,11 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <title>Demo App: @ViewBag.Title</title>
-
+    <script src="~/lib/jQuery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/JavaScript.js"></script>
+    @RenderSection("scripts", false)
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-
 </head>
 <body>
     <div class="navbar navbar-default" >
@@ -28,7 +30,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messaging<span class="caret"></span></a>
           <ul class="dropdown-menu">
               <li><a asp-controller="App" asp-action="Message">Inbox</a></li>
-              <li><a href="#">Send Message</a></li>
+              <li><a asp-controller="App" asp-action="CreateMessage">Send Message</a></li>
           </ul></li>
                     <li class="pull-right"><a asp-controller="Account" asp-action="Logout">Logout</a></li>
               }
@@ -49,9 +51,6 @@
     <div class="text-center">Copyright 2018 Demo App by Aki</div>
     </footer>
 
-    <script src="~/lib/jQuery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/js/JavaScript.js"></script>
-    @RenderSection("scripts", false)
+    
 </body>
 </html>

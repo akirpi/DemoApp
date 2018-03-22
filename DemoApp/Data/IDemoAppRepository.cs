@@ -13,6 +13,7 @@ namespace DemoApp.Data
         void AddEntity(object model);
 
         IEnumerable<Message> GetMessages(string receiver);
+        Message GetMessageById(int Id);
 
         bool SaveAll();
         

@@ -25,7 +25,6 @@ namespace DemoApp.Data
             CreateMap<Message, MessageViewModel>()
                 .ReverseMap();
 
-
         }
     }
 }

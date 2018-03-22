@@ -73,11 +73,15 @@ namespace DemoApp.Data
         {
             return _ctx.Messages
                        .Where(m => m.Receiver == receiver)
-                       .OrderBy(m => m.TimeSent)
+                       .OrderByDescending(m => m.TimeSent)
                        .ToList();
         }
 
-        
+        public Message GetMessageById(int Id)
+        {
+            return _ctx.Messages
+                       .FirstOrDefault(m => m.Id == Id);
+        }
 
 
         public void AddEntity(object model)

@@ -20,6 +20,5 @@ namespace DemoApp.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<DemoApp.ViewModels.ProductViewModel> ProductViewModel { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<DemoApp.ViewModels.MessageViewModel> MessageViewModel { get; set; }
     }
 }
